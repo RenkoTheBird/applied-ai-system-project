@@ -90,24 +90,35 @@ class MoodAnalyzer:
         # like ("not", "happy") or ("never", "fun").
         tokens = self.preprocess(text)
         score = 0
+        skip_next = False
         for i, token in enumerate(tokens):
-          # Handle simple negation
-          if token == "not":
-            if tokens[i + 1] in self.negative_words:
-              score += 1
-            elif tokens[i + 1] in self.positive_words:
-              score -= 1
-          # Handle positive and negative words
-          if token in self.positive_words:
-            score += 1
-          elif token in self.negative_words:
-            score -= 1
-          elif token in self.mixed_words:
-            # Bring score 1 closer to 0
-            if score > 0:
-              score -= 1
-            elif score < 0:
-              score += 1
+            # Skip a word already consumed by a "not" in front of it.
+            if skip_next:
+                skip_next = False
+                continue
+            # Handle simple negation: flip the next word and consume it,
+            # so it is not also counted on the following iteration.
+            if token == "not" and i + 1 < len(tokens):
+                next_token = tokens[i + 1]
+                if next_token in self.negative_words:
+                    score += 1
+                    skip_next = True
+                    continue
+                elif next_token in self.positive_words:
+                    score -= 1
+                    skip_next = True
+                    continue
+            # Handle positive and negative words
+            if token in self.positive_words:
+                score += 1
+            elif token in self.negative_words:
+                score -= 1
+            elif token in self.mixed_words:
+                # Bring score 1 closer to 0
+                if score > 0:
+                    score -= 1
+                elif score < 0:
+                    score += 1
         return score
 
     # ---------------------------------------------------------------------

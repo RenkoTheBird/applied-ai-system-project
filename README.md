@@ -13,6 +13,9 @@ This lab gives you hands on experience with how basic systems work, where they b
 ├── mood_analyzer.py   # Rule based classifier with TODOs to improve
 ├── main.py            # Runs the rule based model and interactive demo
 ├── ml_experiments.py  # (New) A tiny ML classifier using scikit-learn
+├── test_cases.py      # Held-out test posts grouped by phenomenon (negation, sarcasm, ...)
+├── evaluate.py        # Evaluation harness that compares both models on TEST_CASES
+├── test_mood_machine.py # Pytest regression suite (run: python -m pytest -v)
 ├── model_card.md      # Template to fill out after experimenting
 └── requirements.txt   # Dependencies for optional ML exploration
 ```
@@ -41,6 +44,25 @@ To try the ML model later, run:
 
 ```bash
 python ml_experiments.py
+```
+
+## Evaluating the models
+
+The evaluation harness runs both models on `TEST_CASES`, a held-out set
+of posts the ML model was never trained on. It reports overall accuracy,
+accuracy per category (negation, sarcasm, slang, emoji, ...), per-label
+precision/recall/F1, a side-by-side prediction table, and saves
+confusion matrices to `confusion_matrices.png`:
+
+```bash
+python evaluate.py
+```
+
+The regression test suite checks that working behavior stays working
+and documents known limitations as expected failures (`xfail`):
+
+```bash
+python -m pytest test_mood_machine.py -v
 ```
 
 ---
