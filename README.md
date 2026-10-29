@@ -17,7 +17,8 @@ This repo began as `ai110-module3tinker-themoodmachine-starter`, a starter lab f
 ├── evaluate.py        # Harness: runs both models on TEST_CASES, reports metrics + confusion matrices
 ├── test_mood_machine.py # Pytest regression suite (python -m pytest -v)
 ├── model_card.md      # Filled-out model card comparing both models
-└── diagrams/          # system_diagram.md (mermaid) + confusion_matrices.png
+├── diagrams/          # system_diagram.md (mermaid) + confusion_matrices.png
+└── logs/              # Captured run transcripts (see "Reproducible execution evidence")
 ```
 
 **Rule-based pipeline** (`mood_analyzer.py`): `preprocess` strips, lowercases, tokenizes, and removes punctuation; `score_text` adds +1 per positive word, −1 per negative word, flips the following word after `"not"`, and lets mixed words pull the score toward 0; `predict_label` maps score > 0 to `positive`, < 0 to `negative`, 0 to `neutral`.
@@ -86,6 +87,132 @@ Overall accuracy: 0.67 (18/27)
 
 ML model: training accuracy = 1.00, held-out accuracy = 0.67
 ```
+
+## Reproducible execution evidence
+
+The `logs/` directory holds real transcripts captured in `.venv` (Python 3.14.6, scikit-learn 1.9.1, macOS arm64, 2026-10-29). Each file starts with the command that produced it; for the two interactive programs, the piped stdin lines are listed at the top as `stdin>` entries, since a piped session does not echo typed input back.
+
+| Log file | Command that produced it |
+| --- | --- |
+| `logs/rule_based_session.txt` | `python main.py` (inputs piped to stdin) |
+| `logs/ml_session.txt` | `python ml_experiments.py` (inputs piped to stdin) |
+| `logs/evaluation.txt` | `python evaluate.py` |
+| `logs/test_suite.txt` | `python -m pytest test_mood_machine.py -v` |
+
+### Sample command executions
+
+```bash
+# Rule-based model: dataset eval + batch demo + interactive session
+python main.py <<'EOF'
+I love this class so much
+I am not happy about this
+great, my car broke down again
+just passed my driving test :)
+I am happy about the job but sad to leave my friends
+the meeting is at 3pm
+I am not
+quit
+EOF
+
+# ML model: trains on SAMPLE_POSTS, prints training eval, then interactive session
+python ml_experiments.py <<'EOF'
+I love this class so much
+great, my car broke down again
+I am happy about the job but sad to leave my friends
+the meeting is at 3pm
+quit
+EOF
+
+python evaluate.py                        # held-out metrics + confusion_matrices.png
+python -m pytest test_mood_machine.py -v  # regression/guardrail suite
+```
+
+### Example inputs and outputs
+
+Interactive tail of `logs/rule_based_session.txt` — each `Model:` line answers the `stdin>` lines in order:
+
+```text
+You: Model: positive    <- "I love this class so much"      (clear positive)
+You: Model: negative    <- "I am not happy about this"      (negation handled)
+You: Model: positive    <- "great, my car broke down again" (sarcasm fools it)
+You: Model: neutral     <- "just passed my driving test :)" (emoji ignored)
+You: Model: negative    <- "I am happy about the job but sad to leave my friends"
+You: Model: neutral     <- "the meeting is at 3pm"          (neutral)
+You: Model: neutral     <- "I am not"                       (trailing "not": no crash)
+You: Goodbye from the Mood Machine.                         ("quit")
+```
+
+ML model on similar inputs (`logs/ml_session.txt`) — it emits labels the rule-based model cannot:
+
+```text
+You: ML model: positive   <- "I love this class so much"
+You: ML model: sarcasm    <- "great, my car broke down again"
+You: ML model: mixed      <- "I am happy about the job but sad to leave my friends"
+You: ML model: positive   <- "the meeting is at 3pm"        (neutral missed)
+```
+
+Held-out evaluation excerpt (`logs/evaluation.txt`):
+
+```text
+============================================================
+Rule based: held-out test results
+============================================================
+Overall accuracy: 0.52 (14/27)
+
+Accuracy by category:
+  clear        1.00  (6/6)
+  emoji        0.00  (0/4)
+  mixed        0.00  (0/3)
+  negation     1.00  (4/4)
+  neutral      1.00  (3/3)
+  sarcasm      0.00  (0/3)
+  slang        0.25  (1/4)
+
+============================================================
+ML (logistic regression): held-out test results
+============================================================
+Overall accuracy: 0.67 (18/27)
+
+Accuracy by category:
+  clear        0.50  (3/6)
+  emoji        0.75  (3/4)
+  mixed        1.00  (3/3)
+  negation     1.00  (4/4)
+  neutral      0.33  (1/3)
+  sarcasm      0.33  (1/3)
+  slang        0.75  (3/4)
+
+ML model: training accuracy = 1.00, held-out accuracy = 0.67
+```
+
+`logs/rule_based_session.txt` also records that the rule-based model scores only **0.30 on the 63-post `SAMPLE_POSTS`** training data — expected, since it can never emit the `sarcasm` (9 posts) or `mixed` (10 posts) labels that make up ~30% of that dataset.
+
+### Reliability and guardrail results
+
+Tail of `logs/test_suite.txt` — the suite is green while honestly recording known limitations:
+
+```text
+test_mood_machine.py::test_rule_based_clear_cases PASSED
+test_mood_machine.py::test_rule_based_neutral_cases PASSED
+test_mood_machine.py::test_rule_based_negation PASSED
+test_mood_machine.py::test_trailing_not_does_not_crash PASSED
+test_mood_machine.py::test_rule_based_predictions_are_valid_labels PASSED
+test_mood_machine.py::test_rule_based_sarcasm[...] XFAIL  (3 cases)
+test_mood_machine.py::test_rule_based_emoji[...]   XFAIL  (4 cases)
+test_mood_machine.py::test_rule_based_mixed[...]   XFAIL  (3 cases)
+test_mood_machine.py::test_rule_based_slang[...]   XFAIL x3 / XPASS x1
+test_mood_machine.py::test_ml_model_fits_training_data PASSED
+test_mood_machine.py::test_ml_predictions_are_valid_labels PASSED
+test_mood_machine.py::test_accuracy_by_category_counts_correctly PASSED
+================== 11 passed, 13 xfailed, 1 xpassed in 0.62s ==================
+```
+
+Guardrails the suite enforces:
+
+- **Output contract:** both models may only return labels in `{positive, negative, neutral, mixed, sarcasm}` (`test_*_predictions_are_valid_labels`).
+- **Crash guard:** a trailing `"not"` cannot index past the token list (`test_trailing_not_does_not_crash`; visible live in the session log: `"I am not" -> neutral`).
+- **Data integrity:** `SAMPLE_POSTS`/`TRUE_LABELS` length alignment, all labels valid, and every category covered by at least 3 held-out cases.
+- **Honest-limitation sentinels:** sarcasm/emoji/mixed/slang tests are marked `xfail`, so a future fix surfaces as `XPASS` rather than a silent pass; one slang case already XPASSes because it happens to contain the known negative word "stressed".
 
 ## Design decisions
 

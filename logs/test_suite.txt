@@ -1,0 +1,37 @@
+command: python -m pytest test_mood_machine.py -v
+environment: python 3.14.6 | scikit-learn 1.9.1 (Darwin arm64, 2026-10-29)
+
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.2.0, pluggy-1.7.0 -- /Users/wren/Downloads/AI110/applied-ai-system-final/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/wren/Downloads/AI110/applied-ai-system-final
+plugins: platformdirs-4.14.0
+collecting ... collected 25 items
+
+test_mood_machine.py::test_sample_data_is_aligned PASSED                 [  4%]
+test_mood_machine.py::test_all_labels_are_valid PASSED                   [  8%]
+test_mood_machine.py::test_test_set_covers_every_category PASSED         [ 12%]
+test_mood_machine.py::test_rule_based_clear_cases PASSED                 [ 16%]
+test_mood_machine.py::test_rule_based_neutral_cases PASSED               [ 20%]
+test_mood_machine.py::test_rule_based_negation PASSED                    [ 24%]
+test_mood_machine.py::test_trailing_not_does_not_crash PASSED            [ 28%]
+test_mood_machine.py::test_rule_based_predictions_are_valid_labels PASSED [ 32%]
+test_mood_machine.py::test_rule_based_sarcasm[Oh great, another homework assignment du] XFAIL [ 36%]
+test_mood_machine.py::test_rule_based_sarcasm[I just love being stuck in the rain with] XFAIL [ 40%]
+test_mood_machine.py::test_rule_based_sarcasm[Wow fantastic, my flight got delayed aga] XFAIL [ 44%]
+test_mood_machine.py::test_rule_based_emoji[just passed my driving test :)] XFAIL [ 48%]
+test_mood_machine.py::test_rule_based_emoji[feeling sick today :(] XFAIL [ 52%]
+test_mood_machine.py::test_rule_based_emoji[another monday \U0001f480] XFAIL [ 56%]
+test_mood_machine.py::test_rule_based_emoji[best concert ever \U0001f602\U0001f525] XFAIL [ 60%]
+test_mood_machine.py::test_rule_based_mixed[I am happy about the job but sad to leav] XFAIL [ 64%]
+test_mood_machine.py::test_rule_based_mixed[excited for the trip but nervous about f] XFAIL [ 68%]
+test_mood_machine.py::test_rule_based_mixed[the food was great but the service was a] XFAIL [ 72%]
+test_mood_machine.py::test_rule_based_slang[lowkey proud of myself ngl] XFAIL [ 76%]
+test_mood_machine.py::test_rule_based_slang[This party is gonna be lit no cap] XFAIL [ 80%]
+test_mood_machine.py::test_rule_based_slang[that exam was mid tbh] XFAIL [ 84%]
+test_mood_machine.py::test_rule_based_slang[highkey stressed about finals] XPASS [ 88%]
+test_mood_machine.py::test_ml_model_fits_training_data PASSED            [ 92%]
+test_mood_machine.py::test_ml_predictions_are_valid_labels PASSED        [ 96%]
+test_mood_machine.py::test_accuracy_by_category_counts_correctly PASSED  [100%]
+
+================== 11 passed, 13 xfailed, 1 xpassed in 0.62s ===================

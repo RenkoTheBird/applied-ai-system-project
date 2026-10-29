@@ -1,0 +1,91 @@
+command: python ml_experiments.py   (interactive lines below were piped to stdin)
+environment: python 3.14.6 | scikit-learn 1.9.1 (Darwin arm64, 2026-10-29)
+stdin> I love this class so much
+stdin> great, my car broke down again
+stdin> I am happy about the job but sad to leave my friends
+stdin> the meeting is at 3pm
+stdin> quit
+
+Training an ML model on SAMPLE_POSTS and TRUE_LABELS from dataset.py...
+Make sure you have added enough labeled examples before running this.
+
+=== ML Model Evaluation on Dataset ===
+"I love this class so much" -> predicted=positive, true=positive
+"Today was a terrible day" -> predicted=negative, true=negative
+"Feeling tired but kind of hopeful" -> predicted=mixed, true=mixed
+"This is fine" -> predicted=neutral, true=neutral
+"So excited for the weekend" -> predicted=positive, true=positive
+"I am not happy about this" -> predicted=negative, true=negative
+"I don't understand this" -> predicted=neutral, true=neutral
+"I am not sure about this" -> predicted=neutral, true=neutral
+"I did great on the exam" -> predicted=positive, true=positive
+"Just feeling so-so" -> predicted=mixed, true=mixed
+"I absolutely love getting stuck in traffic" -> predicted=sarcasm, true=sarcasm
+"Really feeling this one ngl" -> predicted=positive, true=positive
+"best birthday ever, thanks everyone" -> predicted=positive, true=positive
+"my team won the championship game" -> predicted=positive, true=positive
+"the concert last night was incredible" -> predicted=positive, true=positive
+"got an A on my chemistry final" -> predicted=positive, true=positive
+"she said yes!" -> predicted=positive, true=positive
+"pizza night with the whole family was perfect" -> predicted=positive, true=positive
+"my phone died right before the interview" -> predicted=negative, true=negative
+"ugh, I failed my driving test" -> predicted=negative, true=negative
+"nothing is going right this week" -> predicted=negative, true=negative
+"I missed the bus and was late to work" -> predicted=negative, true=negative
+"the wifi went out during my presentation" -> predicted=negative, true=negative
+"my roommate ate my leftovers again" -> predicted=negative, true=negative
+"I do not feel good about this decision" -> predicted=negative, true=negative
+"the movie was not great honestly" -> predicted=negative, true=negative
+"not excited for monday" -> predicted=negative, true=negative
+"this is not a bad idea" -> predicted=positive, true=positive
+"not gonna lie, that was amazing" -> predicted=positive, true=positive
+"great, my car broke down again" -> predicted=sarcasm, true=sarcasm
+"love it when the prof assigns homework on friday" -> predicted=sarcasm, true=sarcasm
+"oh wonderful, it's raining on my day off" -> predicted=sarcasm, true=sarcasm
+"yes, because that worked so well last time" -> predicted=sarcasm, true=sarcasm
+"thanks for spoiling the ending, really appreciated it" -> predicted=sarcasm, true=sarcasm
+"sure, I totally wanted to wait in line for two hours" -> predicted=sarcasm, true=sarcasm
+"oh yeah, standing in line at the dmv is my favorite hobby" -> predicted=sarcasm, true=sarcasm
+"fantastic, the printer is out of ink again" -> predicted=sarcasm, true=sarcasm
+"this new album slaps fr fr" -> predicted=positive, true=positive
+"that fit is fire no cap" -> predicted=positive, true=positive
+"the vibes at the party were immaculate" -> predicted=positive, true=positive
+"ngl that test cooked me" -> predicted=negative, true=negative
+"lowkey want to skip class tomorrow" -> predicted=negative, true=negative
+"we won the game 🎉" -> predicted=positive, true=positive
+"exams are finally over 😌" -> predicted=positive, true=positive
+"my dog is sick 🥲" -> predicted=negative, true=negative
+"that exam tho 💀" -> predicted=negative, true=negative
+"rip my wallet, tuition is due 💸" -> predicted=negative, true=negative
+"excited to graduate but sad to leave everyone" -> predicted=mixed, true=mixed
+"the movie had great acting but a boring plot" -> predicted=mixed, true=mixed
+"proud of the win but exhausted from training" -> predicted=mixed, true=mixed
+"I like my classes but the homework is killing me" -> predicted=mixed, true=mixed
+"part of me wants to go, part of me wants to stay home" -> predicted=mixed, true=mixed
+"the food was amazing but way too expensive" -> predicted=mixed, true=mixed
+"glad the semester is over but dreading finals week" -> predicted=mixed, true=mixed
+"new apartment is nicer but the commute is worse" -> predicted=mixed, true=mixed
+"the library closes at nine" -> predicted=neutral, true=neutral
+"I have two classes on tuesdays" -> predicted=neutral, true=neutral
+"the grocery store is on fifth street" -> predicted=neutral, true=neutral
+"my appointment got moved to thursday" -> predicted=neutral, true=neutral
+"the bus comes every fifteen minutes" -> predicted=neutral, true=neutral
+"the exam covers chapters four through six" -> predicted=neutral, true=neutral
+"my sister lives in chicago" -> predicted=neutral, true=neutral
+"class registration opens next week" -> predicted=neutral, true=neutral
+
+Accuracy on this dataset: 1.00
+
+=== Interactive Mood Machine (ML model) ===
+Type a sentence to analyze its mood.
+Type 'quit' or press Enter on an empty line to exit.
+
+You: ML model: positive
+You: ML model: sarcasm
+You: ML model: mixed
+You: ML model: positive
+You: Goodbye from the ML Mood Machine.
+
+Tip: Compare these predictions with the rule based model
+by running `python main.py`. Notice where they fail in
+similar ways and where they fail in different ways.

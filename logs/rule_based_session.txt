@@ -1,0 +1,159 @@
+command: python main.py   (interactive lines below were piped to stdin)
+environment: python 3.14.6 | scikit-learn 1.9.1 (Darwin arm64, 2026-10-29)
+stdin> I love this class so much
+stdin> I am not happy about this
+stdin> great, my car broke down again
+stdin> just passed my driving test :)
+stdin> I am happy about the job but sad to leave my friends
+stdin> the meeting is at 3pm
+stdin> I am not
+stdin> quit
+
+=== Rule Based Evaluation on SAMPLE_POSTS ===
+"I love this class so much" -> predicted=positive, true=positive
+"Today was a terrible day" -> predicted=negative, true=negative
+"Feeling tired but kind of hopeful" -> predicted=neutral, true=mixed
+"This is fine" -> predicted=neutral, true=neutral
+"So excited for the weekend" -> predicted=positive, true=positive
+"I am not happy about this" -> predicted=negative, true=negative
+"I don't understand this" -> predicted=neutral, true=neutral
+"I am not sure about this" -> predicted=neutral, true=neutral
+"I did great on the exam" -> predicted=positive, true=positive
+"Just feeling so-so" -> predicted=neutral, true=mixed
+"I absolutely love getting stuck in traffic" -> predicted=positive, true=sarcasm
+"Really feeling this one ngl" -> predicted=neutral, true=positive
+"best birthday ever, thanks everyone" -> predicted=neutral, true=positive
+"my team won the championship game" -> predicted=neutral, true=positive
+"the concert last night was incredible" -> predicted=neutral, true=positive
+"got an A on my chemistry final" -> predicted=neutral, true=positive
+"she said yes!" -> predicted=neutral, true=positive
+"pizza night with the whole family was perfect" -> predicted=neutral, true=positive
+"my phone died right before the interview" -> predicted=neutral, true=negative
+"ugh, I failed my driving test" -> predicted=neutral, true=negative
+"nothing is going right this week" -> predicted=neutral, true=negative
+"I missed the bus and was late to work" -> predicted=neutral, true=negative
+"the wifi went out during my presentation" -> predicted=neutral, true=negative
+"my roommate ate my leftovers again" -> predicted=neutral, true=negative
+"I do not feel good about this decision" -> predicted=positive, true=negative
+"the movie was not great honestly" -> predicted=negative, true=negative
+"not excited for monday" -> predicted=negative, true=negative
+"this is not a bad idea" -> predicted=negative, true=positive
+"not gonna lie, that was amazing" -> predicted=positive, true=positive
+"great, my car broke down again" -> predicted=positive, true=sarcasm
+"love it when the prof assigns homework on friday" -> predicted=positive, true=sarcasm
+"oh wonderful, it's raining on my day off" -> predicted=neutral, true=sarcasm
+"yes, because that worked so well last time" -> predicted=neutral, true=sarcasm
+"thanks for spoiling the ending, really appreciated it" -> predicted=neutral, true=sarcasm
+"sure, I totally wanted to wait in line for two hours" -> predicted=neutral, true=sarcasm
+"oh yeah, standing in line at the dmv is my favorite hobby" -> predicted=neutral, true=sarcasm
+"fantastic, the printer is out of ink again" -> predicted=neutral, true=sarcasm
+"this new album slaps fr fr" -> predicted=neutral, true=positive
+"that fit is fire no cap" -> predicted=neutral, true=positive
+"the vibes at the party were immaculate" -> predicted=neutral, true=positive
+"ngl that test cooked me" -> predicted=neutral, true=negative
+"lowkey want to skip class tomorrow" -> predicted=neutral, true=negative
+"we won the game 🎉" -> predicted=neutral, true=positive
+"exams are finally over 😌" -> predicted=neutral, true=positive
+"my dog is sick 🥲" -> predicted=neutral, true=negative
+"that exam tho 💀" -> predicted=neutral, true=negative
+"rip my wallet, tuition is due 💸" -> predicted=neutral, true=negative
+"excited to graduate but sad to leave everyone" -> predicted=negative, true=mixed
+"the movie had great acting but a boring plot" -> predicted=negative, true=mixed
+"proud of the win but exhausted from training" -> predicted=neutral, true=mixed
+"I like my classes but the homework is killing me" -> predicted=neutral, true=mixed
+"part of me wants to go, part of me wants to stay home" -> predicted=neutral, true=mixed
+"the food was amazing but way too expensive" -> predicted=neutral, true=mixed
+"glad the semester is over but dreading finals week" -> predicted=neutral, true=mixed
+"new apartment is nicer but the commute is worse" -> predicted=neutral, true=mixed
+"the library closes at nine" -> predicted=neutral, true=neutral
+"I have two classes on tuesdays" -> predicted=neutral, true=neutral
+"the grocery store is on fifth street" -> predicted=neutral, true=neutral
+"my appointment got moved to thursday" -> predicted=neutral, true=neutral
+"the bus comes every fifteen minutes" -> predicted=neutral, true=neutral
+"the exam covers chapters four through six" -> predicted=neutral, true=neutral
+"my sister lives in chicago" -> predicted=neutral, true=neutral
+"class registration opens next week" -> predicted=neutral, true=neutral
+
+Rule based accuracy on SAMPLE_POSTS: 0.30
+
+=== Batch Demo on SAMPLE_POSTS (rule based) ===
+"I love this class so much" -> positive
+"Today was a terrible day" -> negative
+"Feeling tired but kind of hopeful" -> neutral
+"This is fine" -> neutral
+"So excited for the weekend" -> positive
+"I am not happy about this" -> negative
+"I don't understand this" -> neutral
+"I am not sure about this" -> neutral
+"I did great on the exam" -> positive
+"Just feeling so-so" -> neutral
+"I absolutely love getting stuck in traffic" -> positive
+"Really feeling this one ngl" -> neutral
+"best birthday ever, thanks everyone" -> neutral
+"my team won the championship game" -> neutral
+"the concert last night was incredible" -> neutral
+"got an A on my chemistry final" -> neutral
+"she said yes!" -> neutral
+"pizza night with the whole family was perfect" -> neutral
+"my phone died right before the interview" -> neutral
+"ugh, I failed my driving test" -> neutral
+"nothing is going right this week" -> neutral
+"I missed the bus and was late to work" -> neutral
+"the wifi went out during my presentation" -> neutral
+"my roommate ate my leftovers again" -> neutral
+"I do not feel good about this decision" -> positive
+"the movie was not great honestly" -> negative
+"not excited for monday" -> negative
+"this is not a bad idea" -> negative
+"not gonna lie, that was amazing" -> positive
+"great, my car broke down again" -> positive
+"love it when the prof assigns homework on friday" -> positive
+"oh wonderful, it's raining on my day off" -> neutral
+"yes, because that worked so well last time" -> neutral
+"thanks for spoiling the ending, really appreciated it" -> neutral
+"sure, I totally wanted to wait in line for two hours" -> neutral
+"oh yeah, standing in line at the dmv is my favorite hobby" -> neutral
+"fantastic, the printer is out of ink again" -> neutral
+"this new album slaps fr fr" -> neutral
+"that fit is fire no cap" -> neutral
+"the vibes at the party were immaculate" -> neutral
+"ngl that test cooked me" -> neutral
+"lowkey want to skip class tomorrow" -> neutral
+"we won the game 🎉" -> neutral
+"exams are finally over 😌" -> neutral
+"my dog is sick 🥲" -> neutral
+"that exam tho 💀" -> neutral
+"rip my wallet, tuition is due 💸" -> neutral
+"excited to graduate but sad to leave everyone" -> negative
+"the movie had great acting but a boring plot" -> negative
+"proud of the win but exhausted from training" -> neutral
+"I like my classes but the homework is killing me" -> neutral
+"part of me wants to go, part of me wants to stay home" -> neutral
+"the food was amazing but way too expensive" -> neutral
+"glad the semester is over but dreading finals week" -> neutral
+"new apartment is nicer but the commute is worse" -> neutral
+"the library closes at nine" -> neutral
+"I have two classes on tuesdays" -> neutral
+"the grocery store is on fifth street" -> neutral
+"my appointment got moved to thursday" -> neutral
+"the bus comes every fifteen minutes" -> neutral
+"the exam covers chapters four through six" -> neutral
+"my sister lives in chicago" -> neutral
+"class registration opens next week" -> neutral
+
+=== Interactive Mood Machine (rule based) ===
+Type a sentence to analyze its mood.
+Type 'quit' or press Enter on an empty line to exit.
+
+You: Model: positive
+You: Model: negative
+You: Model: positive
+You: Model: neutral
+You: Model: negative
+You: Model: neutral
+You: Model: neutral
+You: Goodbye from the Mood Machine.
+
+Tip: After you explore the rule based model here,
+run `python ml_experiments.py` to try a simple ML based model
+trained on the same SAMPLE_POSTS and TRUE_LABELS.
