@@ -7,7 +7,7 @@ flowchart TD
     %% ============ DATA ============
     subgraph Data["Data (dataset.py / test_cases.py)"]
         WL["Word lists<br/>POSITIVE_WORDS<br/>NEGATIVE_WORDS<br/>MIXED_WORDS"]
-        TRAIN["SAMPLE_POSTS + TRUE_LABELS<br/>56 labeled posts<br/>(clear, negation, sarcasm,<br/>slang, emoji, mixed, neutral)"]
+        TRAIN["SAMPLE_POSTS + TRUE_LABELS<br/>63 labeled posts<br/>(clear, negation, sarcasm,<br/>slang, emoji, mixed, neutral)"]
         HELDOUT["TEST_CASES<br/>27 held-out posts<br/>grouped by category"]
     end
 
