@@ -83,5 +83,38 @@ The dataset is still small (63 training posts), so the ML model's perfect traini
 ## 7. Ethical Considerations
 There is frequent Western bias with regard to analyzing messages, especially with how LLMs handle English versus all other languages.
 
-## 8. Ideas for Improvement
+## 8. Limitations and Biases
+
+**What are the limitations or biases in the system?**
+
+- **Label bias.** All 63 training labels and 27 test labels were assigned by one person. Sarcasm is treated as its own mood, but many sarcastic posts can also read as negative — a different labeler would draw that boundary differently, and both models inherit those choices as ground truth.
+- **Language and register bias.** Every post is short, casual, first-person English in a student register (classes, exams, homework). The slang vocabulary ("lowkey", "ngl", "no cap", "mid") reflects one demographic and one moment in time, so the models will do worse on other dialects, languages, and formal text than the numbers suggest.
+- **Lexicon bias.** The rule-based model only knows ~10 positive, ~10 negative, and 8 mixed words. Any emotional word outside those lists contributes nothing, so unknown-but-emotional text is systematically pulled toward "neutral" — a built-in false negative for expressiveness.
+- **Structural bias.** `predict_label` can only return positive/negative/neutral, so the rule-based model is incapable of being correct on mixed or sarcastic posts by construction (0.00 on both held-out categories). Neither model can express uncertainty or assign more than one mood to a post.
+- **Emoji blindness.** `preprocess` keeps emoji as unknown tokens, so 🥲 and 💀 carry no mood signal for either model.
+- **Overfitting as bias.** With only 63 training posts, logistic regression memorizes the sample (1.00 train vs. 0.67 held-out). Its "learned" patterns are biased toward whatever word combinations happened to appear in the dataset rather than general mood structure.
+
+## 9. Potential for Misuse
+
+**Could the AI be misused, and how would you prevent that?**
+
+Yes. A mood classifier over people's writing is a small-scale emotion-inference tool, and the failure modes matter even at 0.67 accuracy:
+
+- **Emotional surveillance.** Running the classifier on employee chats, student posts, or customer messages to score mood without consent. Prevention: only deploy where users are told their text is being mood-analyzed, and show every label as a guess — the rule-based model's `explain()` output should travel with the prediction.
+- **High-stakes decisions.** Using the mood label for hiring, discipline, ad targeting, or mental-health triage. A sarcastic post read literally produces false confidence; a slang-heavy post read as neutral produces false negatives — and both errors land hardest on the groups whose speech the dataset didn't cover. Prevention: keep a human in the loop for any consequential use, and never let this label be the sole signal.
+- **Unequal enforcement.** Auto-flagging "negative" posts would disproportionately mislabel sarcastic and slang-heavy writing, effectively penalizing informal dialects. Prevention: audit per-category accuracy before deployment — the current numbers (sarcasm at 0.00–0.33) already disqualify those labels for enforcement use.
+- **Gaming the score.** The rule-based scorer is fully inspectable, so anyone who reads the word lists can stuff positive words to fake a cheerful score. Prevention: treat the score as an educational demo, not a trust signal; anything gating a real decision would need an opaque model plus adversarial testing.
+
+## 10. Surprises During Reliability Testing
+
+**What surprised you while testing the AI's reliability?**
+
+- **The ML model failed the easy cases.** It scored 1.00 on its own training posts but only 0.50 on held-out "clear" posts — it called "I had an amazing day with my friends" negative. The "smarter" model was less reliable than a word counter on the simplest inputs; the 1.00-train vs. 0.67-test gap made overfitting concrete rather than theoretical.
+- **A pass for the wrong reason.** "highkey stressed about finals" was marked `xfail` but XPASSed — the model ignored "highkey" entirely and was right only because "stressed" happened to be in the negative list. A correct label did not mean correct understanding.
+- **Bag-of-words invents mood where there is none.** The ML model labeled "the meeting is at 3pm" positive — it hallucinates sentiment from word-shape coincidences even when a post carries no mood signal.
+- **The negation trick overdelivered.** Consuming the token after "not" handled both "not happy" -> negative and "not bad" -> positive, scoring a perfect 1.00 on the held-out negation category — better than expected for a few lines of logic. It still only understands "not", though; "don't" and "never" are invisible to it.
+- **Sarcasm was a total wall.** I expected the rule-based model to miss sarcasm, but 0.00 across the whole category — every sarcastic post scored positive — showed this isn't a rare edge case; a large slice of real speech is structurally invisible to a lexicon scorer.
+- **The ML model "learned" emoji without reading them.** It hit 0.75 on emoji posts, but the vectorizer can't really use 💀 — it must be keying on surrounding words like "best" and "monday". Right answers, probably wrong evidence.
+
+## 11. Ideas for Improvement
 More labeled data is the biggest lever, both for ML generalization and for closing the train/test gap. Near term: add emoji and slang entries to the lexicons and let `predict_label` emit "mixed". Longer term: a transformer model would help the model identify sentiment instead of sentence content.
