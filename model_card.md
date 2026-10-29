@@ -118,3 +118,6 @@ Yes. A mood classifier over people's writing is a small-scale emotion-inference 
 
 ## 11. Ideas for Improvement
 More labeled data is the biggest lever, both for ML generalization and for closing the train/test gap. Near term: add emoji and slang entries to the lexicons and let `predict_label` emit "mixed". Longer term: a transformer model would help the model identify sentiment instead of sentence content.
+
+## 12. AI Collaboration Details
+The AI helped identify which features would be best to add; in this case, the comprehensive testing and evaluation system. It also helped me add many more sample posts quickly, which turned out to substantially improve the model's accuracy. I did reject the suggestion that the testing system could be combined with some sort of specialized model with an external dataset, as this would have been convoluted for this project's scope.

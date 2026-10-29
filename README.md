@@ -111,3 +111,5 @@ ML model: training accuracy = 1.00, held-out accuracy = 0.67
 - `model_card.md` — completed model card covering data, behavior, limitations, and improvement ideas.
 - `diagrams/system_diagram.md` — mermaid diagram of components, data flow, and the testing suite.
 - `diagrams/confusion_matrices.png` — side-by-side confusion matrices for both models on the held-out set.
+
+The project showed me that AI is good and working through and testing a variety of solutions, but the onus is still on the developer to ask for and understand them.
